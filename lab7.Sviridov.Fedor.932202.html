@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Task</title>
+    <style>
+        body {
+            position: relative;
+            margin: 20px;
+            background-color: #fff; 
+        }
+        input[type="number"] {
+            width: 50px;
+            margin-right: 10px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        .shape {
+            position: absolute;
+            opacity: 0.8;
+            cursor: pointer;
+        }
+        .square {
+            background-color: red;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+           
+        }
+        .circle {
+            background-color: green;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<input type="number" id="quantity" value="1" min="1">
+<button onclick="createShapes('square')">Квадрат</button>
+<button onclick="createShapes('triangle')">Треугольник</button>
+<button onclick="createShapes('circle')">Круг</button>
+
+<script>
+    function createShapes(type) {
+        const quantity = document.getElementById("quantity").value;
+        for (let i = 0; i < quantity; i++) {
+            const shape = document.createElement('div');
+            shape.classList.add('shape', type);
+
+            // Генерация случайных размеров
+            const size = Math.floor(Math.random() * 70) + 20; // размер от 20 до 120
+            if (type === 'square' || type === 'circle') {
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+            } else if (type === 'triangle') {
+                shape.style.borderLeft = `${size}px solid transparent`;
+                shape.style.borderRight = `${size}px solid transparent`;
+                shape.style.borderBottom = `${size * 2}px solid blue`; // Высота треугольника будет удвоенной ширины
+            }
+
+            // Случайная позиция в пределах вьюпорта
+            const x = Math.random() * (window.innerWidth - size);
+            const y = Math.random() * (window.innerHeight - size * 2); // Для треугольника
+            shape.style.left = `${x}px`;
+            shape.style.top = `${y}px`;
+
+            // Добавление обработчика событий для изменения цвета и удаления
+            shape.addEventListener('click', function() {
+                if (shape.style.backgroundColor === 'yellow' || shape.style.borderBottomColor === 'yellow') {
+                    shape.remove();
+                } else {
+                    if (type === 'triangle') {
+                        shape.style.borderBottomColor = 'yellow';
+                    } else {
+                        shape.style.backgroundColor = 'yellow';
+                    }
+                }
+            });
+
+            document.body.appendChild(shape);
+        }
+    }
+</script>
+
+</body>
+</html>
